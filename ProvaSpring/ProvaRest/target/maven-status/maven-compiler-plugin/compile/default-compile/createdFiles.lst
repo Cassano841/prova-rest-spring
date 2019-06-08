@@ -1,0 +1,11 @@
+br\edu\ifrs\restinga\dev1\nicholas\provarest\ProvaRest\modelo\entidade\Pagamento.class
+br\edu\ifrs\restinga\dev1\nicholas\provarest\ProvaRest\erros\RequisicaoInvalida.class
+br\edu\ifrs\restinga\dev1\nicholas\provarest\ProvaRest\modelo\entidade\Locatario.class
+br\edu\ifrs\restinga\dev1\nicholas\provarest\ProvaRest\modelo\dao\LocatarioDAO.class
+br\edu\ifrs\restinga\dev1\nicholas\provarest\ProvaRest\modelo\dao\VagaDAO.class
+br\edu\ifrs\restinga\dev1\nicholas\provarest\ProvaRest\modelo\entidade\Vaga.class
+br\edu\ifrs\restinga\dev1\nicholas\provarest\ProvaRest\erros\NaoEncontrado.class
+br\edu\ifrs\restinga\dev1\nicholas\provarest\ProvaRest\controller\Vagas.class
+br\edu\ifrs\restinga\dev1\nicholas\provarest\ProvaRest\modelo\dao\PagamentoDAO.class
+br\edu\ifrs\restinga\dev1\nicholas\provarest\ProvaRest\ProvaRestApplication.class
+br\edu\ifrs\restinga\dev1\nicholas\provarest\ProvaRest\controller\Locatarios.class
