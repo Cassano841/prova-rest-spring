@@ -598,8 +598,8 @@ async function teste(pronto) {
         },
         (resposta) => {
             exibir(resposta);
-            verificar(resposta.status == 400, "Cadastrar Pagamento - Forma só pode aceitar os valores 'prova', 'trabalho', 'teste' e 'seminário'",
-                "Pagamento - Forma só pode aceitar os valores 'prova', 'trabalho', 'teste' e 'seminário'", 0.4);
+            verificar(resposta.status == 400, "Cadastrar Pagamento - Forma só pode aceitar os valores 'dinheiro', 'cheque', 'crédito' e 'débito'",
+                "Pagamento - Forma só pode aceitar os valores 'dinheiro', 'cheque', 'crédito' e 'débito'", 0.4);
             fechar();
         });
 

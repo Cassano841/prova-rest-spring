@@ -8,6 +8,7 @@ import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.dao.VagaDAO
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.entidade.Locatario;
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.entidade.Pagamento;
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.entidade.Vaga;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,10 @@ public class Locatarios {
     @Autowired
     PagamentoDAO pagamentoDAO;
     
+    /************************ 
+     *  PESQUISA LOCATARIO  *    
+     ************************/
+    
     @RequestMapping(path = "/locatarios/pequisar/nome", method = RequestMethod.GET)
     public Iterable <Locatario> pesquisarNome(@RequestParam String contem){
         if(contem != null) {
@@ -43,6 +48,9 @@ public class Locatarios {
         }
     }
     
+    /******************** 
+     *  CRUD LOCATARIO  *    
+     *******************/
     @RequestMapping(path = "/locatarios/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Iterable<Locatario> listar() {
@@ -64,8 +72,17 @@ public class Locatarios {
     @ResponseStatus(HttpStatus.CREATED)
     public Locatario cadastrarLocatario(@RequestBody Locatario locatario){
         
-        Locatario locatarioBanco = locatarioDAO.save(locatario);
-        return locatarioBanco;
+        if(locatario.getNome() == null){
+            throw new RequisicaoInvalida("Você deve informar o nome do locatário!");
+        } else if (locatario.getCpf() == null){
+            throw new RequisicaoInvalida("Você deve informar o CPF do locatário!");
+        } else if (locatario.getCpf().length() < 11 || locatario.getCpf().length() > 11){
+            throw new RequisicaoInvalida("CPF deve ser igual a 11 caracteres");
+        } else {  
+            Locatario locatarioBanco = locatarioDAO.save(locatario);
+
+            return locatarioBanco;
+        }
     }
     
     @RequestMapping(path = "/locatarios/{idLocatario}", method = RequestMethod.PUT)
@@ -77,7 +94,7 @@ public class Locatarios {
             throw new RequisicaoInvalida("Você deve informar o nome do locatário!");
         } else if (locatario.getCpf() == null){
             throw new RequisicaoInvalida("Você deve informar o CPF do locatário!");
-        } else if (locatario.getCpf() == "123123"){
+        } else if (locatario.getCpf().length() < 11 || locatario.getCpf().length() > 11){
             throw new RequisicaoInvalida("CPF deve ser igual a 11 caracteres");
         } else {
             locatarioBanco.setNome(locatario.getNome());
@@ -98,29 +115,59 @@ public class Locatarios {
         }
     }
     
-    @RequestMapping(path = "/locatarios/{idLocatario}/pagamentos/", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public Pagamento cadastrarPagamento(@PathVariable int idLocatario, @RequestBody Pagamento pagamento){
-        final Locatario locatarioBanco = this.buscar(idLocatario);
-        Pagamento pagamentoBanco = pagamentoDAO.save(pagamento);
-        locatarioBanco.getPagamentos().add(pagamentoBanco);
-     
-        
-        locatarioDAO.save(locatarioBanco);
-        
-        return pagamentoBanco;
-    }
+    /******************************** 
+     *  CRUD LOCATARIO > PAGEMENTO  *    
+     ********************************/
     
     @RequestMapping(path = "/locatarios/{idLocatario}/pagamentos/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Pagamento buscarPagamento(@PathVariable int idLocatario){
         final Optional<Pagamento> findById = pagamentoDAO.findById(idLocatario);
+        
         if(findById.isPresent()) {
             return findById.get();
         } else {
             throw new NaoEncontrado("Pagamento não localizado!");
         }
     }
+    
+    @RequestMapping(path = "/locatarios/{idLocatario}/pagamentos/", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Pagamento cadastrarPagamento(@PathVariable int idLocatario, @RequestBody Pagamento pagamento){
+        final Locatario locatarioBanco = this.buscar(idLocatario);
+        
+        if(pagamento.getForma() == null){
+            throw new RequisicaoInvalida("Você deve informar a forma de pagamento!");
+        }
+        
+       
+        Pagamento pagamentoBanco = pagamentoDAO.save(pagamento);
+        
+        locatarioBanco.getPagamentos().add(pagamentoBanco);
+        
+        locatarioDAO.save(locatarioBanco);
+        
+        return pagamentoBanco;
+    }
+    
+    @RequestMapping(path = "/locatarios/{idLocatario}/pagamentos/{idPagamento}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void atualizarPagamento(@PathVariable int idLocatario, @RequestBody Pagamento pagamento){
+        final Locatario locatarioBanco = this.buscar(idLocatario);
+               
+        if(pagamento.getForma() == null || pagamento.getForma() == ""){
+            throw new RequisicaoInvalida("Você deve informar a forma de pagamento!");
+        }
+
+     
+        Pagamento pagamentoBanco = pagamentoDAO.save(pagamento);
+        
+        locatarioBanco.getPagamentos().add(pagamentoBanco);
+        
+        locatarioDAO.save(locatarioBanco);
+                
+    }
+    
     
     
 }

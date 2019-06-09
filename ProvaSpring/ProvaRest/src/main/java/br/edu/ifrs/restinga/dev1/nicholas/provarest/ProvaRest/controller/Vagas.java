@@ -21,7 +21,7 @@ public class Vagas {
     
     @Autowired
     VagaDAO vagaDAO;
-    
+    /*
     @RequestMapping(path = "/vagas/pesquisar/local", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Iterable<Vaga> pesquisaLocal(
@@ -35,6 +35,7 @@ public class Vagas {
         else 
             throw new RequisicaoInvalida("Indicar contem ou comeca");
     }
+    */
     
     @RequestMapping(path = "/vagas/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

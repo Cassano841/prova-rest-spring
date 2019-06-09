@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VagaDAO extends CrudRepository<Vaga, Integer>{
-    List<Vaga> findByNomeContaining(String nome);
-    List<Vaga> findByNomeStartingWith(String nome);
-    List<Vaga> findByValorBetween(float inicio, float fim);
+    
 
 }
