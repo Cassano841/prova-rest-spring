@@ -11,7 +11,7 @@ public class Vaga {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String local;
-    private int andar;
+    private Integer andar;
 
     public int getId() {
         return id;
@@ -33,7 +33,7 @@ public class Vaga {
         return andar;
     }
 
-    public void setAndar(int andar) {
+    public void setAndar(Integer andar) {
         this.andar = andar;
     }
     

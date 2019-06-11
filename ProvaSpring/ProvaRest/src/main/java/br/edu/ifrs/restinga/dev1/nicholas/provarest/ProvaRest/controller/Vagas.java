@@ -21,21 +21,13 @@ public class Vagas {
     
     @Autowired
     VagaDAO vagaDAO;
-    /*
-    @RequestMapping(path = "/vagas/pesquisar/local", method = RequestMethod.GET)
+    
+    @RequestMapping(path = "/vagas/pesquisar/andar", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<Vaga> pesquisaLocal(
-            @RequestParam(required = false) String contem,
-            @RequestParam(required = false) String comeca
-            ) {
-        if(contem != null)
-            return vagaDAO.findByNomeContaining(contem);
-        else if(comeca!=null)
-            return vagaDAO.findByNomeStartingWith(comeca);
-        else 
-            throw new RequisicaoInvalida("Indicar contem ou comeca");
+    public Iterable<Vaga> pesquisaLocal(@RequestParam(required = false) Integer andar) {        
+        return vagaDAO.findByAndar(andar);
     }
-    */
+    
     
     @RequestMapping(path = "/vagas/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -57,7 +49,14 @@ public class Vagas {
     @RequestMapping(path = "/vagas/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public Vaga cadastrarVaga(@RequestBody Vaga vaga){
-                       
+        
+        /*
+        Vaga validadorAndar = vagaDAO.findByAndar(vaga.getAndar());
+        
+        if(validadorAndar == null){
+            throw new RequisicaoInvalida("Deu ruim parça!");
+        }
+        */           
         if (vaga.getLocal() == "" || vaga.getLocal() == null){
             throw new RequisicaoInvalida("Campo Local não pode ser vazio");
         }

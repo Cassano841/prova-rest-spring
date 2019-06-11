@@ -40,13 +40,32 @@ public class Locatarios {
      ************************/
     
     @RequestMapping(path = "/locatarios/pequisar/nome", method = RequestMethod.GET)
-    public Iterable <Locatario> pesquisarNome(@RequestParam String contem){
-        if(contem != null) {
-            return locatarioDAO.findByNomeContaining(contem); 
-        } else{
-            throw new RequisicaoInvalida("Deu ruim!");
+    @ResponseStatus(HttpStatus.OK)
+    public Iterable<Locatario> pesquisaNome(
+            @RequestParam(required = false) String contem,
+            @RequestParam(required = false) String comeca
+            ) {
+        if(contem != null){
+            return locatarioDAO.findByNomeContaining(contem);
+        } else if(comeca != null){
+            return locatarioDAO.findByNomeStartingWith(comeca);
+        } else {
+            throw new RequisicaoInvalida("Indicar contem ou comeca");
         }
     }
+    
+    /*
+    @RequestMapping(path = "/locatarios/pesquisar/formapagamento", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public Iterable<Locatario> pesquisarFormaPagamento(@RequestParam(required = false) String pagamento){
+        
+        if(pagamento != null){
+            return pagamentoDAO.findByFormaPagamento(pagamento);
+        } else {
+            throw new RequisicaoInvalida("Pagamento não encontrado");
+        }
+    }
+    */
     
     /******************** 
      *  CRUD LOCATARIO  *    
@@ -118,11 +137,17 @@ public class Locatarios {
     /******************************** 
      *  CRUD LOCATARIO > PAGEMENTO  *    
      ********************************/
-    
+        
     @RequestMapping(path = "/locatarios/{idLocatario}/pagamentos/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Pagamento buscarPagamento(@PathVariable int idLocatario){
-        final Optional<Pagamento> findById = pagamentoDAO.findById(idLocatario);
+    public List<Pagamento> listarPagamentos(@PathVariable int idLocatario) {
+        return this.buscar(idLocatario).getPagamentos();
+    }
+    
+    @RequestMapping(path = "/locatarios/{idLocatario}/pagamentos/{idPagamento}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public Pagamento buscarPagamento(@PathVariable int idLocatario, @PathVariable int idPagamento){
+        final Optional<Pagamento> findById = pagamentoDAO.findById(idPagamento);
         
         if(findById.isPresent()) {
             return findById.get();
@@ -139,6 +164,19 @@ public class Locatarios {
         if(pagamento.getForma() == null){
             throw new RequisicaoInvalida("Você deve informar a forma de pagamento!");
         }
+        if(pagamento.getData() == null || pagamento.getData().equals("")){
+            throw new RequisicaoInvalida("Data deve ser preenchido!");
+        }
+        if(pagamento.getValor() <= 0){
+            throw new RequisicaoInvalida("Valor deve ser maior que 0");
+        }
+        
+        if(!pagamento.getForma().equals("cheque") && 
+           !pagamento.getForma().equals("dinheiro") && 
+           !pagamento.getForma().equals("débito") &&
+           !pagamento.getForma().equals("crédito")) {
+            throw new RequisicaoInvalida("Forma de pagamento deve ser dinheiro, cheque, débito ou crédito!");
+        }
         
        
         Pagamento pagamentoBanco = pagamentoDAO.save(pagamento);
@@ -154,12 +192,17 @@ public class Locatarios {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void atualizarPagamento(@PathVariable int idLocatario, @RequestBody Pagamento pagamento){
         final Locatario locatarioBanco = this.buscar(idLocatario);
-               
-        if(pagamento.getForma() == null || pagamento.getForma() == ""){
+        
+        if(pagamento.getForma() == null){
             throw new RequisicaoInvalida("Você deve informar a forma de pagamento!");
         }
-
-     
+        if(pagamento.getData() == null || pagamento.getData().equals("")){
+            throw new RequisicaoInvalida("Data deve ser preenchido!");
+        }
+        if(pagamento.getValor() <= 0){
+            throw new RequisicaoInvalida("Valor deve ser maior que 0");
+        }
+               
         Pagamento pagamentoBanco = pagamentoDAO.save(pagamento);
         
         locatarioBanco.getPagamentos().add(pagamentoBanco);
@@ -168,7 +211,17 @@ public class Locatarios {
                 
     }
     
-    
+    /*
+    @RequestMapping(path = "/locatarios/{idLocatario}/pagamentos/{idPagamento}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void apagarPagamento(@PathVariable int idLocatario, @PathVariable int idPagamento){
+        if(pagamentoDAO.existsById(idPagamento)) {
+            pagamentoDAO.deleteById(idPagamento);
+        } else {
+            throw new NaoEncontrado(("Pagamento não encontrado!"));
+        }
+    }
+    */
     
 }
 
