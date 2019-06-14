@@ -39,16 +39,11 @@ public class Locatarios {
      *  PESQUISA LOCATARIO  *    
      ************************/
     
-    @RequestMapping(path = "/locatarios/pequisar/nome", method = RequestMethod.GET)
+    @RequestMapping(path = "/locatarios/pesquisar/nome", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<Locatario> pesquisaNome(
-            @RequestParam(required = false) String contem,
-            @RequestParam(required = false) String comeca
-            ) {
-        if(contem != null){
+    public Iterable<Locatario> pesquisaNome(@RequestParam(required = false) String contem){ 
+        if(contem!=null){
             return locatarioDAO.findByNomeContaining(contem);
-        } else if(comeca != null){
-            return locatarioDAO.findByNomeStartingWith(comeca);
         } else {
             throw new RequisicaoInvalida("Indicar contem ou comeca");
         }
@@ -211,17 +206,28 @@ public class Locatarios {
                 
     }
     
-    /*
     @RequestMapping(path = "/locatarios/{idLocatario}/pagamentos/{idPagamento}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void apagarPagamento(@PathVariable int idLocatario, @PathVariable int idPagamento){
-        if(pagamentoDAO.existsById(idPagamento)) {
-            pagamentoDAO.deleteById(idPagamento);
-        } else {
-            throw new NaoEncontrado(("Pagamento não encontrado!"));
+        Locatario locatario = this.buscar(idLocatario);
+        Pagamento pagamentoEncontrado = null;
+        
+        List<Pagamento> pagamentos = locatario.getPagamentos();
+        
+        for(Pagamento pagamento : pagamentos){
+            if(pagamento.getId() == idPagamento){
+                pagamentoEncontrado = pagamento;
+            }
         }
+        
+        if(pagamentoEncontrado != null){
+            locatario.getPagamentos().remove(pagamentoEncontrado);
+        } else {
+            throw new NaoEncontrado("Pagamento não encontrado");
+        }
+        
+        locatarioDAO.save(locatario);
     }
-    */
-    
+
 }
 

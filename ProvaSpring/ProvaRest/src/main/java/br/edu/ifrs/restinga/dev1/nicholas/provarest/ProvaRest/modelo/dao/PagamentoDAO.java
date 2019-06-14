@@ -10,5 +10,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 
 public interface PagamentoDAO extends CrudRepository<Pagamento, Integer>{
-    
+    //List<Pagamento> findByFormaPagamento(String forma);
 }

@@ -15,4 +15,5 @@ import org.springframework.stereotype.Repository;
 public interface LocatarioDAO extends CrudRepository<Locatario, Integer> {
     List<Locatario> findByNomeContaining(String nome);
     List<Locatario> findByNomeStartingWith(String nome);
+    //List<Locatario> findByFormaPagamento(Pagamento pagamento);
 }

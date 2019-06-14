@@ -24,10 +24,15 @@ public class Vagas {
     
     @RequestMapping(path = "/vagas/pesquisar/andar", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<Vaga> pesquisaLocal(@RequestParam(required = false) Integer andar) {        
+    public Iterable<Vaga> pesquisaAndar(@RequestParam int andar) {        
         return vagaDAO.findByAndar(andar);
     }
     
+    @RequestMapping(path = "/vagas/pesquisar/local", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public Iterable<Vaga> pesquisaAndar(@RequestParam String local) {        
+        return vagaDAO.findByLocal(local);
+    }
     
     @RequestMapping(path = "/vagas/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -49,14 +54,7 @@ public class Vagas {
     @RequestMapping(path = "/vagas/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public Vaga cadastrarVaga(@RequestBody Vaga vaga){
-        
-        /*
-        Vaga validadorAndar = vagaDAO.findByAndar(vaga.getAndar());
-        
-        if(validadorAndar == null){
-            throw new RequisicaoInvalida("Deu ruim parça!");
-        }
-        */           
+               
         if (vaga.getLocal() == "" || vaga.getLocal() == null){
             throw new RequisicaoInvalida("Campo Local não pode ser vazio");
         }
@@ -66,6 +64,7 @@ public class Vagas {
         if (vaga.getAndar() < 1 || vaga.getAndar() > 10){
             throw new RequisicaoInvalida("Campo Andar deve ser entre 1 e 10");
         }
+       
                 
         Vaga vagaBanco = vagaDAO.save(vaga);
         

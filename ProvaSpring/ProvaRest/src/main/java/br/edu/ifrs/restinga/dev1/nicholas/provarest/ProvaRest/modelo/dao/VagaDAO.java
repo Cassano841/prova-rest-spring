@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VagaDAO extends CrudRepository<Vaga, Integer>{
-    List <Vaga> findByAndar(Integer andar);
+    List <Vaga> findByAndar(int andar);
     List <Vaga> findByLocal(String local);
 
 }
