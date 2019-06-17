@@ -1,5 +1,6 @@
 package br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.entidade;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,7 +11,7 @@ public class Vaga {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String local;
+    private String local;    
     private int andar;
 
     public int getId() {

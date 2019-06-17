@@ -3,6 +3,7 @@ package br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.entidade;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +30,7 @@ public class Locatario {
     
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
+    @ElementCollection
     private List<Pagamento> pagamentos;
 
     public Vaga getVagas() {
@@ -45,9 +47,7 @@ public class Locatario {
 
     public void setPagamentos(List<Pagamento> pagamentos) {
         this.pagamentos = pagamentos;
-    }
-
-    
+    }    
     
     public int getId() {
         return id;

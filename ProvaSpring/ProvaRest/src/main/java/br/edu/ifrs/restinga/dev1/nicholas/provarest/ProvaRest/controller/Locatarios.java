@@ -4,10 +4,8 @@ import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.erros.NaoEncontrad
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.erros.RequisicaoInvalida;
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.dao.LocatarioDAO;
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.dao.PagamentoDAO;
-import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.dao.VagaDAO;
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.entidade.Locatario;
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.entidade.Pagamento;
-import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.entidade.Vaga;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,25 +40,29 @@ public class Locatarios {
     @RequestMapping(path = "/locatarios/pesquisar/nome", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Iterable<Locatario> pesquisaNome(@RequestParam(required = false) String contem){ 
-        if(contem!=null){
+        if(contem != null){
             return locatarioDAO.findByNomeContaining(contem);
         } else {
-            throw new RequisicaoInvalida("Indicar contem ou comeca");
+            throw new RequisicaoInvalida("Indicar nome do local");
         }
     }
     
+    /************************ 
+     * PESQUISA PAGAMENTOS  *    
+     ************************/
     /*
-    @RequestMapping(path = "/locatarios/pesquisar/formapagamento", method = RequestMethod.GET)
+    @RequestMapping(path = "/locatarios/pesquisar/forma", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<Locatario> pesquisarFormaPagamento(@RequestParam(required = false) String pagamento){
+    public List<Locatario> pesquisarFormaPagamento(@RequestParam(required = false) String forma){
         
-        if(pagamento != null){
-            return pagamentoDAO.findByFormaPagamento(pagamento);
+        if(forma != ""){
+            return locatarioDAO.findByFormaPagamento(pagamento);
         } else {
             throw new RequisicaoInvalida("Pagamento não encontrado");
         }
     }
     */
+    
     
     /******************** 
      *  CRUD LOCATARIO  *    

@@ -3,6 +3,7 @@ package br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.controller;
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.erros.NaoEncontrado;
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.erros.RequisicaoInvalida;
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.dao.VagaDAO;
+import static br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.dao.VagaDAO.queryAndar;
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.entidade.Vaga;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,10 @@ public class Vagas {
         return vagaDAO.findByLocal(local);
     }
     
+    /******************** 
+     *    CRUD VAGAS    *    
+     *******************/
+    
     @RequestMapping(path = "/vagas/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Iterable <Vaga> listar(){
@@ -64,8 +69,8 @@ public class Vagas {
         if (vaga.getAndar() < 1 || vaga.getAndar() > 10){
             throw new RequisicaoInvalida("Campo Andar deve ser entre 1 e 10");
         }
-       
-                
+        
+        
         Vaga vagaBanco = vagaDAO.save(vaga);
         
         return vagaBanco;
