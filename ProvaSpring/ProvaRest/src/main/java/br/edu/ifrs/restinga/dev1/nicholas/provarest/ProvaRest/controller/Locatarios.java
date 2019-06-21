@@ -56,7 +56,7 @@ public class Locatarios {
     public List<Locatario> pesquisarFormaPagamento(@RequestParam(required = false) String forma){
         
         if(forma != ""){
-            return locatarioDAO.findByFormaPagamento(pagamento);
+            return locatarioDAO.findByForma(forma);
         } else {
             throw new RequisicaoInvalida("Pagamento não encontrado");
         }
@@ -67,6 +67,7 @@ public class Locatarios {
     /******************** 
      *  CRUD LOCATARIO  *    
      *******************/
+    
     @RequestMapping(path = "/locatarios/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Iterable<Locatario> listar() {

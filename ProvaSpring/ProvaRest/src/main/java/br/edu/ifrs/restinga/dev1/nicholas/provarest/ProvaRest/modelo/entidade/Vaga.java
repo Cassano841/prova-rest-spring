@@ -1,6 +1,5 @@
 package br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.entidade;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

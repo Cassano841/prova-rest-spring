@@ -3,19 +3,13 @@ package br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.entidade;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-/**
- *
- * @author 10070217
- */
 @Entity
 public class Locatario {
     @Id
@@ -25,12 +19,10 @@ public class Locatario {
     private String cpf;
     
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(unique = true)
     private Vaga vagas;
     
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    @ElementCollection
     private List<Pagamento> pagamentos;
 
     public Vaga getVagas() {

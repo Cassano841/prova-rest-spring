@@ -20,7 +20,7 @@ public class Pagamento {
     private String forma;
     
     @Temporal(TemporalType.DATE)
-    private Date data;
+    private Date dataPagamento;
     private float valor;
 
     public int getId() {
@@ -38,15 +38,15 @@ public class Pagamento {
     public void setForma(String forma) {
         this.forma = forma;
     }
-
+    
     public Date getData() {
-        return data;
+        return dataPagamento;
     }
 
     public void setData(Date data) {
-        this.data = data;
+        this.dataPagamento = data;
     }
-
+  
     public float getValor() {
         return valor;
     }
