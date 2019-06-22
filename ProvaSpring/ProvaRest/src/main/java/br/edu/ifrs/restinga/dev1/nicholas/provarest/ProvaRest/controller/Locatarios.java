@@ -6,6 +6,9 @@ import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.dao.Locatar
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.dao.PagamentoDAO;
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.entidade.Locatario;
 import br.edu.ifrs.restinga.dev1.nicholas.provarest.ProvaRest.modelo.entidade.Pagamento;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,18 +53,18 @@ public class Locatarios {
     /************************ 
      * PESQUISA PAGAMENTOS  *    
      ************************/
-    /*
+    
     @RequestMapping(path = "/locatarios/pesquisar/forma", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Locatario> pesquisarFormaPagamento(@RequestParam(required = false) String forma){
+    public List<Pagamento> pesquisarFormaPagamento(@RequestParam(required = false) String forma){
         
         if(forma != ""){
-            return locatarioDAO.findByForma(forma);
+            return pagamentoDAO.findByForma(forma);
         } else {
             throw new RequisicaoInvalida("Pagamento não encontrado");
         }
     }
-    */
+    
     
     
     /******************** 
@@ -174,9 +177,20 @@ public class Locatarios {
            !pagamento.getForma().equals("débito") &&
            !pagamento.getForma().equals("crédito")) {
             throw new RequisicaoInvalida("Forma de pagamento deve ser dinheiro, cheque, débito ou crédito!");
-        }
-        
-       
+        } else {    
+            for (int x = 0; x < locatarioBanco.getPagamentos().size();x++) {
+                for (int y = 0; y < locatarioBanco.getPagamentos().size(); y++) {                              
+                    if(locatarioBanco.getPagamentos().get(x).equals(locatarioBanco.getPagamentos().get(y)) && x!=y) {
+                        Date data = new Date();
+                        Calendar calendario = Calendar.getInstance();
+                        calendario.setTime(data);
+                        GregorianCalendar calendarioGregoriano = new GregorianCalendar();
+                        calendarioGregoriano.setTime(data);
+                        } else {
+                        throw new RequisicaoInvalida("Dois pagamentos no mesmo mês e ano!");
+                    }
+                }
+            }
         Pagamento pagamentoBanco = pagamentoDAO.save(pagamento);
         
         locatarioBanco.getPagamentos().add(pagamentoBanco);
@@ -184,6 +198,7 @@ public class Locatarios {
         locatarioDAO.save(locatarioBanco);
         
         return pagamentoBanco;
+        }
     }
     
     @RequestMapping(path = "/locatarios/{idLocatario}/pagamentos/{idPagamento}", method = RequestMethod.PUT)

@@ -30,10 +30,10 @@ public class Vagas {
         return vagaDAO.findByAndar(andar);
     }
     
-    @RequestMapping(path = "/vagas/pesquisar/local", method = RequestMethod.GET)
+    @RequestMapping(path = "/vagas/pesquisar/localVaga", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<Vaga> pesquisaAndar(@RequestParam String local) {        
-        return vagaDAO.findByLocal(local);
+    public Iterable<Vaga> pesquisaAndar(@RequestParam String localVaga) {        
+        return vagaDAO.findByLocal(localVaga);
     }
     
     /* CRUD VAGAS */
